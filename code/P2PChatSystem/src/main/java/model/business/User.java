@@ -6,7 +6,6 @@ import model.Network;
 public class User {
 
 
-
     private String userId;
     private String name;
 

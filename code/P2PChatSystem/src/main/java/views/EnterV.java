@@ -1,6 +1,8 @@
 package views;
 
 import java.util.concurrent.CountDownLatch;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -34,10 +36,11 @@ public class EnterV extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         nameJTF = new javax.swing.JTextField();
-        entrerJB = new javax.swing.JButton();
+        enterJB = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("P2PChatSystem");
+        setBackground(new java.awt.Color(153, 204, 255));
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
@@ -60,10 +63,16 @@ public class EnterV extends javax.swing.JFrame {
         nameJTF.setForeground(new java.awt.Color(0, 51, 204));
         nameJTF.setText("Enter your name");
 
-        entrerJB.setBackground(new java.awt.Color(0, 153, 0));
-        entrerJB.setFont(new java.awt.Font("JetBrains Mono", 0, 18)); // NOI18N
-        entrerJB.setForeground(new java.awt.Color(255, 255, 255));
-        entrerJB.setText("enter");
+        enterJB.setBackground(new java.awt.Color(0, 153, 0));
+        enterJB.setFont(new java.awt.Font("JetBrains Mono", 0, 18)); // NOI18N
+        enterJB.setForeground(new java.awt.Color(255, 255, 255));
+        enterJB.setText("enter");
+        enterJB.setBounds(new java.awt.Rectangle(10, 20, 10, 20));
+        enterJB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                enterJBMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -73,7 +82,7 @@ public class EnterV extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(nameJTF, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-                    .addComponent(entrerJB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(enterJB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(55, 55, 55))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -91,7 +100,7 @@ public class EnterV extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(entrerJB)
+                .addComponent(enterJB)
                 .addContainerGap(46, Short.MAX_VALUE))
         );
 
@@ -116,6 +125,10 @@ public class EnterV extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void enterJBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enterJBMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterJBMouseClicked
 
 
     public static EnterV getEnterV() {
@@ -164,11 +177,27 @@ public class EnterV extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton entrerJB;
+    private javax.swing.JButton enterJB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField nameJTF;
     // End of variables declaration//GEN-END:variables
+
+    public JButton getEntrerJB() {
+        return enterJB;
+    }
+
+    public void setEntrerJB(JButton entrerJB) {
+        this.enterJB = entrerJB;
+    }
+
+    public JTextField getNameJTF() {
+        return nameJTF;
+    }
+
+    public void setNameJTF(JTextField nameJTF) {
+        this.nameJTF = nameJTF;
+    }
 
 }

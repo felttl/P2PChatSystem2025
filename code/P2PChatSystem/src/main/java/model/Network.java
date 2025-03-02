@@ -18,7 +18,7 @@ public class Network {
             boolean found = false;
             while (interfaces.hasMoreElements() && !found) {
                 NetworkInterface networkInterface = interfaces.nextElement();
-                // Ignorer les interfaces loopback et virtuelles
+                // Ignore loopback interfaces and virtual one
                 if (networkInterface.isLoopback()
                 || networkInterface.isVirtual()
                 || networkInterface.getHardwareAddress() == null) {
@@ -26,18 +26,18 @@ public class Network {
                 }
                 String name = networkInterface.getName().toLowerCase();
                 String displayName = networkInterface.getDisplayName().toLowerCase();
-                // Priorité aux interfaces "enX" (Mac/Linux) et Ethernet (Windows)
+                // priority to 'aux' interfaces "enX" (Mac/Linux) and Ethernet (Windows)
                 if (!(name.startsWith("en")
                 || displayName.contains("ethernet")
                 || name.startsWith("eth"))) {
                     continue;
                 }
-                // Récupération de l'adresse MAC
+                // recover mac address
                 byte[] macAddressBytes = networkInterface.getHardwareAddress();
                 if (macAddressBytes == null) {
                     continue;
                 }
-                // Convertir l'adresse MAC en format lisible
+                // convert mac address into a readable format
                 StringBuilder macAddress = new StringBuilder();
                 for (int i = 0; i < macAddressBytes.length; i++) {
                     macAddress.append(String.format("%02X", macAddressBytes[i]));
@@ -48,7 +48,7 @@ public class Network {
                 res = String.valueOf(macAddress);
                 found = true;
             }
-            //System.out.println("Aucune interface Ethernet ('enX' ou équivalent) trouvée.");
+            //System.out.println("no Ethernet interface ('enX' or equivalent) found.");
         } catch (SocketException e) {
             System.err.println("error in NetworkConnection.getMacAddress() : "+e);
         }
