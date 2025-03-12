@@ -1,6 +1,6 @@
 package model.business;
 
-public class MessageFile implements MessageContent {
-
-
-}
+//public class MessageFile implements MessageContent {
+//
+//
+//}
