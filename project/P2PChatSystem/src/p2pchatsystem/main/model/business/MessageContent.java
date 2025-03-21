@@ -1,6 +1,4 @@
-package model.business;
-
-import java.util.Date;
+package p2pchatsystem.main.model.business;
 
 /**
  * manage the content of messages
@@ -12,5 +10,5 @@ public interface MessageContent {
      * transform the content to (see on top of the class)
      * @return
      */
-    public MessageContent getContent();
+    MessageContent getContent();
 }

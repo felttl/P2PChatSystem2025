@@ -28,8 +28,6 @@ public class MainV extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jFileChooser1 = new javax.swing.JFileChooser();
-        jFileChooser3 = new javax.swing.JFileChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         usersListJL = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -168,8 +166,6 @@ public class MainV extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel connectedNameJL;
     private javax.swing.JButton jButton1;
-    private javax.swing.JFileChooser jFileChooser1;
-    private javax.swing.JFileChooser jFileChooser3;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -179,4 +175,10 @@ public class MainV extends javax.swing.JFrame {
     private javax.swing.JTextArea userTextJBA;
     private javax.swing.JList<String> usersListJL;
     // End of variables declaration//GEN-END:variables
+
+
+
+
+
+
 }
