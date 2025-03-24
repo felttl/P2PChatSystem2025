@@ -1,4 +1,4 @@
-package model.business;
+package p2pchatsystem.main.model.business;
 
 import p2pchatsystem.main.model.business.MessageContent;
 
