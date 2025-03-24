@@ -1,5 +1,7 @@
 package model.business;
 
+import p2pchatsystem.main.model.business.MessageContent;
+
 public class Message {
 
     boolean isSent;
