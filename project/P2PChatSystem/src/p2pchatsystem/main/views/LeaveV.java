@@ -4,6 +4,8 @@
  */
 package p2pchatsystem.main.views;
 
+import javax.swing.JButton;
+
 /**
  *
  * @author felixmacos
@@ -26,34 +28,28 @@ public class LeaveV extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        nameJTF = new javax.swing.JTextField();
-        entrerJB = new javax.swing.JButton();
+        bye = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel2.setFont(new java.awt.Font("Helvetica Neue", 0, 10)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("<html>\nyou cannot change<br> your name, be sure\n</html>\n");
-        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        jLabel1.setFont(new java.awt.Font("JetBrains Mono", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("JetBrains Mono", 0, 48)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("thank you");
+        jLabel1.setText("Thank you");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        nameJTF.setFont(new java.awt.Font("JetBrains Mono", 0, 13)); // NOI18N
-        nameJTF.setText("Enter your name");
-
-        entrerJB.setBackground(new java.awt.Color(102, 0, 0));
-        entrerJB.setFont(new java.awt.Font("JetBrains Mono", 0, 18)); // NOI18N
-        entrerJB.setForeground(new java.awt.Color(255, 255, 255));
-        entrerJB.setText("bye");
-        entrerJB.addActionListener(new java.awt.event.ActionListener() {
+        bye.setBackground(new java.awt.Color(102, 0, 0));
+        bye.setFont(new java.awt.Font("JetBrains Mono", 0, 18)); // NOI18N
+        bye.setForeground(new java.awt.Color(255, 255, 255));
+        bye.setText("Bye");
+        bye.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                byeBtn(evt);
+            }
+        });
+        bye.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                entrerJBActionPerformed(evt);
+                byeActionPerformed(evt);
             }
         });
 
@@ -62,37 +58,34 @@ public class LeaveV extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(157, 157, 157)
-                .addComponent(entrerJB, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(127, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(nameJTF, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(131, 131, 131))
+                .addContainerGap(92, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(91, 91, 91))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(173, 173, 173)
+                .addComponent(bye, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(99, 99, 99)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(nameJTF, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(entrerJB)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addComponent(bye, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(93, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void entrerJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrerJBActionPerformed
+    private void byeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_entrerJBActionPerformed
+    }//GEN-LAST:event_byeActionPerformed
+
+    private void byeBtn(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_byeBtn
+        // TODO add your handling code here:
+    }//GEN-LAST:event_byeBtn
 
     /**
      * @param args the command line arguments
@@ -130,9 +123,18 @@ public class LeaveV extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton entrerJB;
+    private javax.swing.JButton bye;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField nameJTF;
     // End of variables declaration//GEN-END:variables
+
+    public JButton getBye() {
+        return bye;
+    }
+
+    public void setBye(JButton bye) {
+        this.bye = bye;
+    }
+
+
 }
+

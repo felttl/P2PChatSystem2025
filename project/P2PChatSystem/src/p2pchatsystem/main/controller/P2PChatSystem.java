@@ -13,6 +13,7 @@ import javax.swing.*;
 
 import p2pchatsystem.main.views.EnterV;
 import p2pchatsystem.main.views.MainV;
+import p2pchatsystem.main.views.LeaveV;
 
 /**
  *
@@ -26,6 +27,7 @@ public class P2PChatSystem {
     public static void main(String[] args) {
         // when the user comes (we change that view later)
         P2PChatSystem.currentV = EnterV.getEnterV();
+        
 
         // when username is ok move on
         JButton enterJB = ((EnterV) P2PChatSystem.currentV).getEntrerJB();
@@ -51,9 +53,41 @@ public class P2PChatSystem {
                     currentV.dispose();
                     P2PChatSystem.currentV=new MainV();
                     P2PChatSystem.currentV.setVisible(true);
+                    
+                    JButton leaveButton = ((MainV) P2PChatSystem.currentV).getLeaveBtn();
+       leaveButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+         int result = JOptionPane.showConfirmDialog(
+                            null,
+                            "Do you really want to leave?",
+                            "Information",
+                            JOptionPane.YES_NO_OPTION
+                        );
+        
+        if (result == JOptionPane.YES_OPTION) {
+        currentV.dispose();        
+        P2PChatSystem.currentV = new LeaveV();
+        P2PChatSystem.currentV.setVisible(true);
+        
+          JButton byeButton = ((LeaveV) P2PChatSystem.currentV).getBye();        
+      byeButton.addActionListener(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        System.exit(0); 
+                                    }
+                                });
+            
+        
+    }
+    }
+});
                 }
             }
         });
+        
+        
         // update button with the event into the view
         ((EnterV) currentV).setEntrerJB(enterJB);
     }
