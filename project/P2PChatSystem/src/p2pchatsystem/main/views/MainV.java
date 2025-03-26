@@ -1,6 +1,6 @@
 package p2pchatsystem.main.views;
 
-import javax.swing.JButton;
+import javax.swing.*;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -74,9 +74,9 @@ public class MainV extends javax.swing.JFrame {
         connectedNameJL.setFont(new java.awt.Font("JetBrains Mono", 0, 13)); // NOI18N
         connectedNameJL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         connectedNameJL.setLabelFor(this);
-        connectedNameJL.setText("prototypeConnectedName");
+        connectedNameJL.setText("prototypeConnectedToName");
 
-        userNameFirstLetterJL.setText("jLabel2");
+        userNameFirstLetterJL.setText("userNameProto");
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -84,7 +84,6 @@ public class MainV extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane3.setViewportView(jList1);
-        jList1.getAccessibleContext().setAccessibleParent(null);
 
         leaveBtn.setForeground(new java.awt.Color(255, 51, 51));
         leaveBtn.setText("Leave ?");
@@ -95,7 +94,7 @@ public class MainV extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("+ msg");
+        jButton2.setText("+ file");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,13 +105,12 @@ public class MainV extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(leaveBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                        .addComponent(connectedNameJL, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(userNameFirstLetterJL)
-                        .addGap(36, 36, 36))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(connectedNameJL, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(userNameFirstLetterJL, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -121,8 +119,8 @@ public class MainV extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(sendJB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,9 +219,107 @@ public class MainV extends javax.swing.JFrame {
         this.leaveBtn = leaveBtn;
     }
 
+    public JFileChooser getjFileChooser1() {
+        return jFileChooser1;
+    }
 
+    public void setjFileChooser1(JFileChooser jFileChooser1) {
+        this.jFileChooser1 = jFileChooser1;
+    }
 
+    public JLabel getConnectedNameJL() {
+        return connectedNameJL;
+    }
 
+    public void setConnectedNameJL(JLabel connectedNameJL) {
+        this.connectedNameJL = connectedNameJL;
+    }
 
+    public JButton getjButton1() {
+        return jButton1;
+    }
 
+    public void setjButton1(JButton jButton1) {
+        this.jButton1 = jButton1;
+    }
+
+    public JButton getjButton2() {
+        return jButton2;
+    }
+
+    public void setjButton2(JButton jButton2) {
+        this.jButton2 = jButton2;
+    }
+
+    public JFileChooser getjFileChooser3() {
+        return jFileChooser3;
+    }
+
+    public void setjFileChooser3(JFileChooser jFileChooser3) {
+        this.jFileChooser3 = jFileChooser3;
+    }
+
+    public JList<String> getjList1() {
+        return jList1;
+    }
+
+    public void setjList1(JList<String> jList1) {
+        this.jList1 = jList1;
+    }
+
+    public JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
+
+    public void setjScrollPane1(JScrollPane jScrollPane1) {
+        this.jScrollPane1 = jScrollPane1;
+    }
+
+    public JScrollPane getjScrollPane2() {
+        return jScrollPane2;
+    }
+
+    public void setjScrollPane2(JScrollPane jScrollPane2) {
+        this.jScrollPane2 = jScrollPane2;
+    }
+
+    public JScrollPane getjScrollPane3() {
+        return jScrollPane3;
+    }
+
+    public void setjScrollPane3(JScrollPane jScrollPane3) {
+        this.jScrollPane3 = jScrollPane3;
+    }
+
+    public JButton getSendJB() {
+        return sendJB;
+    }
+
+    public void setSendJB(JButton sendJB) {
+        this.sendJB = sendJB;
+    }
+
+    public JLabel getUserNameFirstLetterJL() {
+        return userNameFirstLetterJL;
+    }
+
+    public void setUserNameFirstLetterJL(JLabel userNameFirstLetterJL) {
+        this.userNameFirstLetterJL = userNameFirstLetterJL;
+    }
+
+    public JTextArea getUserTextJBA() {
+        return userTextJBA;
+    }
+
+    public void setUserTextJBA(JTextArea userTextJBA) {
+        this.userTextJBA = userTextJBA;
+    }
+
+    public JList<String> getUsersListJL() {
+        return usersListJL;
+    }
+
+    public void setUsersListJL(JList<String> usersListJL) {
+        this.usersListJL = usersListJL;
+    }
 }

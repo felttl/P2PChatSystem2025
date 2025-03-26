@@ -44,13 +44,28 @@ public class P2PChatSystem {
                         JOptionPane.WARNING_MESSAGE
                     );
                 } else {
+                    // changing view to main
                     currentV.dispose();
                     P2PChatSystem.currentV=new MainV();
                     P2PChatSystem.currentV.setVisible(true);
+                    // create a "dynamic" JList
+                    //
+                    // load title
+                    JLabel convWithName = ((MainV) P2PChatSystem.currentV).getConnectedNameJL();
+                    convWithName.setText(""); // empty
+                    // load username
+                    JLabel userName = ((MainV) P2PChatSystem.currentV).getUserNameFirstLetterJL();
+                    userName.setText(buttonTitle);
+
                     JButton leaveButton = ((MainV) P2PChatSystem.currentV).getLeaveBtn();
                     leaveButton.addActionListener(new ActionListener() {
+                        /**
+                         * if the user wants to leave
+                         * @param e the event to be processed
+                         */
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            // warning box
                             int result = JOptionPane.showConfirmDialog(
                                 null,
                                 "Do you really want to leave?",
