@@ -1,8 +1,14 @@
 package p2pchatsystem.main.views;
 
+import java.awt.Color;
 import java.util.concurrent.CountDownLatch;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import javax.swing.*;
+import java.awt.*;
+
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -21,6 +27,26 @@ public class EnterV extends javax.swing.JFrame {
      */
     public EnterV() {
         initComponents();
+        nameJTF.setForeground(Color.GRAY); // Texte grisé pour ressembler à un placeholder
+
+        nameJTF.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (nameJTF.getText().equals("Enter your name")) {
+                    nameJTF.setText("");
+                    nameJTF.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (nameJTF.getText().isEmpty()) {
+                    nameJTF.setText("Enter your name");
+                    nameJTF.setForeground(Color.GRAY);
+                }
+            }
+        });
+        SwingUtilities.invokeLater(() -> enterJB.requestFocusInWindow());
     }
 
     /**
@@ -193,6 +219,7 @@ public class EnterV extends javax.swing.JFrame {
             System.out.println("GUI generated Form(by Netbeans) \"EnterV\" cannot be loaded: "+e);
         }
         return EnterV.enterV; 
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -205,6 +232,7 @@ public class EnterV extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField nameJTF;
     // End of variables declaration//GEN-END:variables
+
 
     public JButton getEntrerJB() {
         return enterJB;
