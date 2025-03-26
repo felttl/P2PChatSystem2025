@@ -3,9 +3,6 @@ package p2pchatsystem.main.controller;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
-
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -39,7 +36,6 @@ public class P2PChatSystem {
             public void actionPerformed(ActionEvent e) {
                 // check if input is okay
                 String buttonTitle = ((EnterV) P2PChatSystem.currentV).getNameJTF().getText();
-                System.out.println(buttonTitle);
                 if(buttonTitle.equals(defaultInputTxt)) {
                     JOptionPane.showMessageDialog(
                         null,
