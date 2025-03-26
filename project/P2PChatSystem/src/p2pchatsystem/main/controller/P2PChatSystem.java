@@ -19,7 +19,7 @@ import p2pchatsystem.main.views.LeaveV;
 
 public class P2PChatSystem {
 
-    private static JFrame currentV;
+    public static JFrame currentV;
 
     public static void main(String[] args) {
         // when the user comes (we change that view later)
