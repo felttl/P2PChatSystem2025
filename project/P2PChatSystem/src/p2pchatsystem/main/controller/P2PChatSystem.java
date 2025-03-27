@@ -153,18 +153,21 @@ public class P2PChatSystem {
                     new Thread(() -> {
                         while (true) {
                             try {
-                                Thread.sleep(5000);  // Attendre un peu avant de vérifier à nouveau les IPs
+                                Thread.sleep(5000);
                                 List<String> updatedIPs = objUDP.getIPs();
                                 for (String ip : updatedIPs) {
                                     if (!listModel.contains(ip)) {
                                         SwingUtilities.invokeLater(() -> listModel.addElement(ip));
+                                        ((MainV) P2PChatSystem.currentV).setUsersListJL(listModel);
                                     }
                                 }
+
                             } catch (InterruptedException er) {
                                 er.printStackTrace();
                             }
                         }
                     }).start();
+
                 }
             }
         });
