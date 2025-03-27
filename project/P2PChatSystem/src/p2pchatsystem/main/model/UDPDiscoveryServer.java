@@ -1,4 +1,5 @@
 package p2pchatsystem.main.model;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -84,7 +85,9 @@ public class UDPDiscoveryServer extends Thread{
     }
     
     
-    
+     public void deconnexion() throws IOException{
+        UDPDiscoveryClient.aurevoir();
+    }
     
     /*Partie pour comparer les ips pour les serveurs pour mes connexions tcp*/
     

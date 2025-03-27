@@ -42,6 +42,19 @@ public class UDPDiscoveryClient {
         socket.close();
     }
 
+    static void aurevoir() throws IOException{
+        DatagramSocket socket = new DatagramSocket();
+        InetAddress broadcastAddress = InetAddress.getByName("255.255.255.255"); // Utiliser l'adresse de broadcast
+        //
+        
+        String message = "bye";
+
+        DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), broadcastAddress, 12345);
+        socket.send(packet);
+        System.out.println("Message ENVOYÉ");
+
+        socket.close();
+    }
     
     public static String getBroadcastAddress() {
         String os = System.getProperty("os.name").toLowerCase();
