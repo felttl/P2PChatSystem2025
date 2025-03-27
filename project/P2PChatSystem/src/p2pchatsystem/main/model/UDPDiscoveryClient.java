@@ -17,8 +17,7 @@ public class UDPDiscoveryClient {
    
     public static void bonjour() throws IOException {
         DatagramSocket socket = new DatagramSocket();
-        InetAddress broadcastAddress = InetAddress.getByName("255.255.255.255"); // Utiliser l'adresse de broadcast
-        //
+        InetAddress broadcastAddress = InetAddress.getByName(UDPDiscoveryClient.getBroadcastAddress()); // Utiliser l'adresse de broadcast
         
         String message = "bonjour";
 
@@ -41,5 +40,26 @@ public class UDPDiscoveryClient {
         System.out.println("Message ENVOYÉ");
 
         socket.close();
+    }
+
+    
+    public static String getBroadcastAddress() {
+        String os = System.getProperty("os.name").toLowerCase();
+        
+        if (os.contains("mac")) {
+            return "255.255.255.255";
+        } else if (os.contains("win")) {
+            try {
+                String monIp = InetAddress.getLocalHost().getHostAddress();
+                String[] ipParts = monIp.split("\\.");
+                if (ipParts.length == 4) {
+                    return ipParts[0] + "." + ipParts[1] + "." + ipParts[2] + ".255";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return "Unknown";
     }
 }
