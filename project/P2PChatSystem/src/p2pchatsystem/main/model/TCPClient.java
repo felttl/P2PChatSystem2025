@@ -13,40 +13,66 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 /**
  *
  * @author macbook
  */
-public class TCPClient {
-    public static void envoyerMessage() throws IOException{
-        boolean envoie = true;
-        String message;
-        Scanner scanner = new Scanner( System.in );
-        
-        Socket clientSocket = new Socket("10.8.27.88",8585);
-        //"192.168.1.18",8585
-        //"192.168.1.29",12345
-        //10.8.27.88
-        
-        BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
-        
-        while(envoie == true){
-            System.out.println("\n");
-            message = scanner.nextLine();
-            if(message.contentEquals("stop")){
-               envoie = false;
-               message = "Bye";
-            }
-            writer.println(message);
+public class TCPClient extends Thread {
+    private Socket clientSocket;
+    private PrintWriter writer;
+    private static ArrayList<TCPClient> listThread = new ArrayList<>();
+    
+
+    public TCPClient(Socket socket) {
+        this.clientSocket = socket;
+        try {
+            this.writer = new PrintWriter(clientSocket.getOutputStream(), true);  // Initialisation correcte
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'initialisation du PrintWriter: " + e.getMessage());
         }
-        
-        reader.close();
-        writer.close();
-            
-        //Fin connection client
-        clientSocket.close();
-        
+    }
+
+    public static void envoyerMessage(String id, String message, int port) throws IOException {
+        Socket clientSocket = new Socket(id, port);
+        System.out.println("CONNEXION EN TANT QUE CLIENT TCP");
+
+        TCPClient task = new TCPClient(clientSocket);
+        listThread.add(task);
+        task.start();
+
+        // Assurez-vous que le writer est correctement initialisé avant d'envoyer un message
+        if (task.writer != null) {
+            task.writer.println(message);  // Envoi du message
+        } else {
+            System.err.println("Erreur: Le writer n'a pas été initialisé correctement !");
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String message;
+            while ((message = reader.readLine()) != null) {
+                if (message.equals("Bye")) {
+                    break;
+                }
+                System.out.println(message);  // Affichage du message reçu
+            }
+
+            reader.close();
+            writer.close();
+            clientSocket.close();
+        } catch (Exception e) {
+            System.err.println("ERREUR " + e.getMessage());
+        }
+    }
+
+    public static ArrayList<TCPClient> getLesThreads() {
+        return listThread;
     }
 }

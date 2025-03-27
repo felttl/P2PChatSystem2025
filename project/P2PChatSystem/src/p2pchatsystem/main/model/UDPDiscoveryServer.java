@@ -1,21 +1,24 @@
 package p2pchatsystem.main.model;
-
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-//
 
-public class UDPDiscoveryServer {
+public class UDPDiscoveryServer extends Thread{
 
     private DatagramSocket socket;
     private Map<String, String> clients; // Stocke les clients {ip}
+    private String monIp;
 
     public UDPDiscoveryServer(int port) throws Exception {
         socket = new DatagramSocket(port);
-        clients = new HashMap<>();
-
+        clients = Collections.synchronizedMap(new HashMap<>());
+        monIp = InetAddress.getLocalHost().getHostAddress();
+        
         broadcastHelloMessage();
     }
 
@@ -34,6 +37,12 @@ public class UDPDiscoveryServer {
                 InetAddress senderAddress = packet.getAddress();
                 String clientInfo = senderAddress.getHostAddress(); // Suppression de l'utilisation du port
 
+                
+                if (clientInfo.equals(monIp)) {
+                    System.out.println("Message ignoré de moi-même: " + clientInfo);
+                    continue;
+                }
+                
                 if (message.startsWith("bonjour")) {
                     // Si le client n'est pas déjà dans la liste
                     if (!clients.containsKey(clientInfo)) {
@@ -55,16 +64,82 @@ public class UDPDiscoveryServer {
 
                 // Afficher les clients connectés sans le port
                 System.out.println("Clients connectés: " + clients.keySet());
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
-    public static void ecouteUsers() throws Exception {
-        UDPDiscoveryServer server = new UDPDiscoveryServer(12345);
-        System.out.println("UDP Discovery Server running on port 12345...");
-        server.listen();
+    
+    public Map<String, String> getUsers(){
+        return this.clients;
     }
+    
+    public void run() {
+    try {
+        System.out.println("UDP Discovery Server running on port 12345...");
+        this.listen();
+        } catch (Exception ex) {}
+    }
+    
+    
+    
+    
+    /*Partie pour comparer les ips pour les serveurs pour mes connexions tcp*/
+    
+    private int compareIp(String ip1, String ip2) {
+        String[] parts1 = ip1.split("\\.");
+        String[] parts2 = ip2.split("\\.");
+
+        for (int i = 0; i < 4; i++) {
+            int num1 = Integer.parseInt(parts1[i]);
+            int num2 = Integer.parseInt(parts2[i]);
+
+            if (num1 < num2) return -1;
+            if (num1 > num2) return 1;
+        }
+        return 0;
+    }
+    
+    public List<String> getIPs() {
+        List<String> Ips = new ArrayList<>();
+        
+        for (String clientIp : clients.keySet()) {
+            Ips.add(clientIp);
+        } 
+        return Ips;
+    }
+    
+    public List<String> getSmallerIPs() {
+        List<String> smallerIPs = new ArrayList<>();
+
+        try {
+            for (String clientIp : clients.keySet()) {
+                if (compareIp(clientIp, monIp) < 0) {
+                    smallerIPs.add(clientIp);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return smallerIPs;
+    }
+
+    public List<String> getBiggerIPs() {
+        List<String> smallerIPs = new ArrayList<>();
+
+        try {
+            for (String clientIp : clients.keySet()) {
+                if (compareIp(clientIp, monIp) > 0) {
+                    smallerIPs.add(clientIp);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return smallerIPs;
+    }
+    
 }
