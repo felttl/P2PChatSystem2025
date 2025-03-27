@@ -5,6 +5,7 @@ package p2pchatsystem.main.controller;
  */
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -135,6 +136,9 @@ public class P2PChatSystem {
                                 P2PChatSystem.currentV = new LeaveV();
                                 P2PChatSystem.currentV.setVisible(true);
                                 JButton byeButton = ((LeaveV) P2PChatSystem.currentV).getBye();
+                                try {
+                                    objUDP.deconnexion();
+                                } catch (IOException ex) {}
                                 byeButton.addActionListener(new ActionListener() {
                                     @Override
                                     public void actionPerformed(ActionEvent e) {
