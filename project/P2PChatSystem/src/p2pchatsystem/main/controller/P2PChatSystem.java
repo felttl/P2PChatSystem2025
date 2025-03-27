@@ -66,12 +66,13 @@ public class P2PChatSystem {
                     
                     
                     // Ajouter les IPs détectées dans la liste
+                    JList listModel = ((MainV) P2PChatSystem.currentV).getUsersListJL();
                     List<String> availableIPs = objUDP.getIPs();
                     for (String ip : availableIPs) {
                         listModel.addElement(ip);
                     }
 
-                    JTextArea messageArea = ((MainV) P2PChatSystem.currentV).getUserTextJBA();
+                    JTextArea messageArea = ((MainV) P2PChatSystem.currentV).getjAffichageArea();
                     new Thread(() -> TCPServer.lancerServeurPort1(messageArea)).start();
                     new Thread(() -> TCPServer.lancerServeurPort2(messageArea)).start();
 

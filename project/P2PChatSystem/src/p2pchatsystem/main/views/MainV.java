@@ -39,10 +39,10 @@ public class MainV extends javax.swing.JFrame {
         sendJB = new javax.swing.JButton();
         connectedNameJL = new javax.swing.JLabel();
         userNameFirstLetterJL = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
         leaveBtn = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jAffichageArea = new javax.swing.JTextArea();
 
         jButton1.setText("jButton1");
 
@@ -79,13 +79,6 @@ public class MainV extends javax.swing.JFrame {
         userNameFirstLetterJL.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         userNameFirstLetterJL.setText("userNameProto");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane3.setViewportView(jList1);
-
         leaveBtn.setForeground(new java.awt.Color(255, 51, 51));
         leaveBtn.setText("Leave ?");
         leaveBtn.setActionCommand("Leave");
@@ -96,6 +89,10 @@ public class MainV extends javax.swing.JFrame {
         });
 
         jButton2.setText("+ file");
+
+        jAffichageArea.setColumns(20);
+        jAffichageArea.setRows(5);
+        jScrollPane4.setViewportView(jAffichageArea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -114,13 +111,13 @@ public class MainV extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jScrollPane2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(sendJB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane4))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -134,7 +131,7 @@ public class MainV extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3)
+                        .addComponent(jScrollPane4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -197,14 +194,14 @@ public class MainV extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel connectedNameJL;
+    private javax.swing.JTextArea jAffichageArea;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JFileChooser jFileChooser3;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JButton leaveBtn;
     private javax.swing.JButton sendJB;
     private javax.swing.JLabel userNameFirstLetterJL;
@@ -259,7 +256,7 @@ public class MainV extends javax.swing.JFrame {
     public void setjFileChooser3(JFileChooser jFileChooser3) {
         this.jFileChooser3 = jFileChooser3;
     }
-
+/*
     public JList<String> getjList1() {
         return jList1;
     }
@@ -267,9 +264,13 @@ public class MainV extends javax.swing.JFrame {
     public void setjList1(JList<String> jList1) {
         this.jList1 = jList1;
     }
-
-    public JScrollPane getjScrollPane1() {
-        return jScrollPane1;
+*/
+    public JTextArea getjAffichageArea(){
+        return jAffichageArea;
+    }
+    
+    public void setjScrollPane1() {
+        this.jScrollPane1 = jScrollPane1;
     }
 
     public void setjScrollPane1(JScrollPane jScrollPane1) {
@@ -283,7 +284,7 @@ public class MainV extends javax.swing.JFrame {
     public void setjScrollPane2(JScrollPane jScrollPane2) {
         this.jScrollPane2 = jScrollPane2;
     }
-
+/*
     public JScrollPane getjScrollPane3() {
         return jScrollPane3;
     }
@@ -291,7 +292,7 @@ public class MainV extends javax.swing.JFrame {
     public void setjScrollPane3(JScrollPane jScrollPane3) {
         this.jScrollPane3 = jScrollPane3;
     }
-
+*/
     public JButton getSendJB() {
         return sendJB;
     }
