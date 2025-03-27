@@ -5,8 +5,12 @@ package p2pchatsystem.main.controller;
  */
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.*;
+import p2pchatsystem.main.model.TCPClient;
+import p2pchatsystem.main.model.TCPServer;
+import p2pchatsystem.main.model.UDPDiscoveryServer;
 
 import p2pchatsystem.main.views.EnterV;
 import p2pchatsystem.main.views.MainV;
@@ -21,6 +25,7 @@ public class P2PChatSystem {
 
     private static JFrame currentV;
     private static String username = "";
+    private static UDPDiscoveryServer objUDP;
 
     public static void main(String[] args) {
         // when the user comes (we change that view later)
@@ -58,6 +63,46 @@ public class P2PChatSystem {
                     JLabel userName = ((MainV) P2PChatSystem.currentV).getUserNameFirstLetterJL();
                     userName.setText(buttonTitle);
                     P2PChatSystem.username = buttonTitle;
+                    
+                    
+                    // Ajouter les IPs détectées dans la liste
+                    List<String> availableIPs = objUDP.getIPs();
+                    for (String ip : availableIPs) {
+                        listModel.addElement(ip);
+                    }
+
+                    JTextArea messageArea = ((MainV) P2PChatSystem.currentV).getUserTextJBA();
+                    new Thread(() -> TCPServer.lancerServeurPort1(messageArea)).start();
+                    new Thread(() -> TCPServer.lancerServeurPort2(messageArea)).start();
+
+
+                    JButton sendJB = ((MainV) P2PChatSystem.currentV).getSendJB();
+                    JList<String> usersList = ((MainV) P2PChatSystem.currentV).getUsersListJL();
+                    // Action à exécuter lors de l'envoi d'un message
+                    sendJB.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String selectedUser = usersList.getSelectedValue();  // IP sélectionnée
+                            if (selectedUser != null) {
+                                if (message != null && !message.isEmpty()) {
+                                    try {
+                                        // Envoyer le message via le client TCP
+                                        List<String> smallest = objUDP.getSmallerIPs();
+                                        if(smallest.contains(selectedUser)){
+                                            TCPClient.envoyerMessage(selectedUser, message, 50001);
+                                        }else{
+                                            TCPClient.envoyerMessage(selectedUser, message, 50000);
+                                        }
+                                    } catch (Exception ex) {
+                                        ex.printStackTrace();
+                                    }
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(currentV, "Veuillez sélectionner une IP.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    });
+                    
 
                     JButton leaveButton = ((MainV) P2PChatSystem.currentV).getLeaveBtn();
                     leaveButton.addActionListener(new ActionListener() {
