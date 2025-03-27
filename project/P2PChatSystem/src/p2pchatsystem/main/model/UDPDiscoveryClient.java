@@ -15,11 +15,11 @@ import java.net.InetAddress;
 
 public class UDPDiscoveryClient {
    
-    public static void bonjour() throws IOException {
+    public static void bonjour(String nom) throws IOException {
         DatagramSocket socket = new DatagramSocket();
         InetAddress broadcastAddress = InetAddress.getByName(UDPDiscoveryClient.getBroadcastAddress()); // Utiliser l'adresse de broadcast
         
-        String message = "bonjour";
+        String message = "bonjour nom="+nom;
 
         DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), broadcastAddress, 12345);
         socket.send(packet);
@@ -29,11 +29,11 @@ public class UDPDiscoveryClient {
     }
     
 
-    static void response(String hostAddress) throws IOException{
+    static void response(String hostAddress, String nom) throws IOException{
         DatagramSocket socket = new DatagramSocket();
         InetAddress broadcastAddress = InetAddress.getByName(hostAddress); // Utiliser l'adresse de broadcast
         
-        String message = "salut";
+        String message = "salut nom="+nom;
 
         DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), broadcastAddress, 12345);
         socket.send(packet);

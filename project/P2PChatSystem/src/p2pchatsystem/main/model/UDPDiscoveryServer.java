@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import p2pchatsystem.main.controller.P2PChatSystem;
 
 public class UDPDiscoveryServer extends Thread{
 
@@ -23,7 +24,7 @@ public class UDPDiscoveryServer extends Thread{
     }
 
     private void broadcastHelloMessage() throws Exception {
-        UDPDiscoveryClient.bonjour();
+        UDPDiscoveryClient.bonjour(P2PChatSystem.getUsername());
     }
 
     public void listen() {
@@ -49,7 +50,7 @@ public class UDPDiscoveryServer extends Thread{
                         System.out.println("New client connected: " + clientInfo);
                         clients.put(clientInfo, senderAddress.getHostAddress());
 
-                        UDPDiscoveryClient.response(senderAddress.getHostAddress());
+                        UDPDiscoveryClient.response(senderAddress.getHostAddress(),P2PChatSystem.getUsername());
                     }
                 } else if(message.startsWith("salut")){
                         if (!clients.containsKey(clientInfo)) {

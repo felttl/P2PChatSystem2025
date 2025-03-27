@@ -20,6 +20,7 @@ import p2pchatsystem.main.views.LeaveV;
 public class P2PChatSystem {
 
     private static JFrame currentV;
+    private static String username = "";
 
     public static void main(String[] args) {
         // when the user comes (we change that view later)
@@ -56,6 +57,7 @@ public class P2PChatSystem {
                     // load username
                     JLabel userName = ((MainV) P2PChatSystem.currentV).getUserNameFirstLetterJL();
                     userName.setText(buttonTitle);
+                    P2PChatSystem.username = buttonTitle;
 
                     JButton leaveButton = ((MainV) P2PChatSystem.currentV).getLeaveBtn();
                     leaveButton.addActionListener(new ActionListener() {
@@ -91,6 +93,9 @@ public class P2PChatSystem {
         });
         // update button with the event into the view
         ((EnterV) currentV).setEntrerJB(enterJB);
+    }
+    public static String getUsername(){
+        return username;
     }
 
 }
