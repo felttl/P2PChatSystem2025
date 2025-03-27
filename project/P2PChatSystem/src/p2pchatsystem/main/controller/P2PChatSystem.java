@@ -80,6 +80,7 @@ public class P2PChatSystem {
                     List<String> availableIPs = objUDP.getIPs();
                     for (String ip : availableIPs) {
                         listModel.addElement(ip);
+                        ((MainV) P2PChatSystem.currentV).setUsersListJL(listModel);
                     }
                     
 
