@@ -75,15 +75,15 @@ public class P2PChatSystem {
                     P2PChatSystem.username = buttonTitle;
                     
                     
-                    // Ajouter les IPs détectées dans la liste
                     DefaultListModel<String> listModel = new DefaultListModel<>();
-                    JList<String> ipList = new JList<>(listModel);
-                    ((MainV) P2PChatSystem.currentV).setUsersListJL(listModel);
+                    JList<String> ipList = ((MainV) P2PChatSystem.currentV).getUsersListJL();
+                    ipList.setModel(listModel);
+                    ipList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+                    // Ajout des IPs
                     List<String> availableIPs = objUDP.getIPs();
                     for (String ip : availableIPs) {
                         listModel.addElement(ip);
-                        ((MainV) P2PChatSystem.currentV).setUsersListJL(listModel);
                     }
                     
 
@@ -95,28 +95,34 @@ public class P2PChatSystem {
                     JButton sendJB = ((MainV) P2PChatSystem.currentV).getSendJB();
                     // Action à exécuter lors de l'envoi d'un message
                     sendJB.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            String selectedUser = ipList.getSelectedValue();  // IP sélectionnée
-                            if (selectedUser != null) {
-                                String message = ((MainV) P2PChatSystem.currentV).getUserTextJBA().toString();
-                                if (message != null && !message.isEmpty()) {
-                                    try {
-                                        // Envoyer le message via le client TCP
-                                        List<String> smallest = objUDP.getSmallerIPs();
-                                        if(smallest.contains(selectedUser)){
-                                            TCPClient.envoyerMessage(selectedUser, message, 50001);
-                                        }else{
-                                            TCPClient.envoyerMessage(selectedUser, message, 50000);
-                                        }
-                                    } catch (Exception ex) {
-                                        ex.printStackTrace();
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String selectedUser = ipList.getSelectedValue();  // IP sélectionnée
+                        System.out.println("Selected IP: " + selectedUser);
+                        if (selectedUser != null) {
+                            String message = ((MainV) P2PChatSystem.currentV).getUserTextJBA().getText().trim();
+                            if (!message.isEmpty()) {
+                                try {
+                                    // Envoyer le message via le client TCP
+                                    List<String> smallest = objUDP.getSmallerIPs();
+                                    if(smallest.contains(selectedUser)){
+                                        TCPClient.envoyerMessage(selectedUser, message, 50001);
+                                    }else{
+                                        TCPClient.envoyerMessage(selectedUser, message, 50000);
                                     }
+
+                                    // Effacer le texte après l'envoi
+                                    ((MainV) P2PChatSystem.currentV).getUserTextJBA().setText("");
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
                                 }
                             } else {
-                                JOptionPane.showMessageDialog(currentV, "Veuillez sélectionner une IP.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(currentV, "Veuillez saisir un message.", "Erreur", JOptionPane.ERROR_MESSAGE);
                             }
+                        } else {
+                            JOptionPane.showMessageDialog(currentV, "Veuillez sélectionner une IP.", "Erreur", JOptionPane.ERROR_MESSAGE);
                         }
+                    }
                     });
                     
 
