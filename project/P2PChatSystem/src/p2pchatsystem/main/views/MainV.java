@@ -317,8 +317,8 @@ public class MainV extends javax.swing.JFrame {
         this.userTextJBA = userTextJBA;
     }
 
-    public JList<String> getUsersListJL() {
-        return usersListJL;
+    public JList<String> getUsersListJL(DefaultListModel<String> model){
+        return new JList<>(model);
     }
 
     public void setUsersListJL(JList<String> usersListJL) {

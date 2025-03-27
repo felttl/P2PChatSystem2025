@@ -6,6 +6,8 @@ package p2pchatsystem.main.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 import p2pchatsystem.main.model.TCPClient;
@@ -50,7 +52,13 @@ public class P2PChatSystem {
                         JOptionPane.WARNING_MESSAGE
                     );
                 } else {
-                    // changing view to main
+                    try {
+                        // changing view to main
+                        objUDP = new UDPDiscoveryServer(12345);
+                    } catch (Exception ex) {
+                        Logger.getLogger(P2PChatSystem.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    objUDP.start();
                     currentV.dispose();
                     P2PChatSystem.currentV=new MainV();
                     P2PChatSystem.currentV.setVisible(true);
@@ -66,11 +74,13 @@ public class P2PChatSystem {
                     
                     
                     // Ajouter les IPs détectées dans la liste
-                    JList listModel = ((MainV) P2PChatSystem.currentV).getUsersListJL();
+                    DefaultListModel<String> listModel = new DefaultListModel<>();
+                    JList<String> ipList = ((MainV) P2PChatSystem.currentV).getUsersListJL(listModel);
                     List<String> availableIPs = objUDP.getIPs();
                     for (String ip : availableIPs) {
                         listModel.addElement(ip);
                     }
+                    
 
                     JTextArea messageArea = ((MainV) P2PChatSystem.currentV).getjAffichageArea();
                     new Thread(() -> TCPServer.lancerServeurPort1(messageArea)).start();
@@ -78,13 +88,13 @@ public class P2PChatSystem {
 
 
                     JButton sendJB = ((MainV) P2PChatSystem.currentV).getSendJB();
-                    JList<String> usersList = ((MainV) P2PChatSystem.currentV).getUsersListJL();
                     // Action à exécuter lors de l'envoi d'un message
                     sendJB.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            String selectedUser = usersList.getSelectedValue();  // IP sélectionnée
+                            String selectedUser = ipList.getSelectedValue();  // IP sélectionnée
                             if (selectedUser != null) {
+                                String message = ((MainV) P2PChatSystem.currentV).getUserTextJBA().toString();
                                 if (message != null && !message.isEmpty()) {
                                     try {
                                         // Envoyer le message via le client TCP
@@ -134,6 +144,22 @@ public class P2PChatSystem {
                             }
                         }
                     });
+                    // Mettre à jour la liste des IPs disponibles
+                    new Thread(() -> {
+                        while (true) {
+                            try {
+                                Thread.sleep(5000);  // Attendre un peu avant de vérifier à nouveau les IPs
+                                List<String> updatedIPs = objUDP.getIPs();
+                                for (String ip : updatedIPs) {
+                                    if (!listModel.contains(ip)) {
+                                        SwingUtilities.invokeLater(() -> listModel.addElement(ip));
+                                    }
+                                }
+                            } catch (InterruptedException er) {
+                                er.printStackTrace();
+                            }
+                        }
+                    }).start();
                 }
             }
         });
@@ -143,5 +169,7 @@ public class P2PChatSystem {
     public static String getUsername(){
         return username;
     }
+    
+    
 
 }
