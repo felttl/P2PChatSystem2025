@@ -321,7 +321,7 @@ public class MainV extends javax.swing.JFrame {
         return new JList<>(model);
     }
 
-    public void setUsersListJL(JList<String> usersListJL) {
-        this.usersListJL = usersListJL;
+    public void setUsersListJL(DefaultListModel<String> model) {
+        this.usersListJL.setModel(model);
     }
 }
