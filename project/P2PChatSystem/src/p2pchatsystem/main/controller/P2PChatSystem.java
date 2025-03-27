@@ -6,6 +6,7 @@ package p2pchatsystem.main.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,7 +77,9 @@ public class P2PChatSystem {
                     
                     // Ajouter les IPs détectées dans la liste
                     DefaultListModel<String> listModel = new DefaultListModel<>();
-                    JList<String> ipList = ((MainV) P2PChatSystem.currentV).getUsersListJL(listModel);
+                    JList<String> ipList = new JList<>(listModel);
+                    ((MainV) P2PChatSystem.currentV).setUsersListJL(listModel);
+
                     List<String> availableIPs = objUDP.getIPs();
                     for (String ip : availableIPs) {
                         listModel.addElement(ip);
@@ -150,23 +153,40 @@ public class P2PChatSystem {
                         }
                     });
                     // Mettre à jour la liste des IPs disponibles
-                    new Thread(() -> {
-                        while (true) {
-                            try {
-                                Thread.sleep(5000);
-                                List<String> updatedIPs = objUDP.getIPs();
-                                for (String ip : updatedIPs) {
-                                    if (!listModel.contains(ip)) {
-                                        SwingUtilities.invokeLater(() -> listModel.addElement(ip));
-                                        ((MainV) P2PChatSystem.currentV).setUsersListJL(listModel);
-                                    }
-                                }
+                        new Thread(() -> {
+                            while (true) {
+                                try {
+                                    Thread.sleep(5000);
+                                    List<String> updatedIPs = objUDP.getIPs();
+                                    SwingUtilities.invokeLater(() -> {
+                                        // Supprimer les IPs non disponibles
+                                        List<String> ipsToRemove = new ArrayList<>();
+                                        for (int i = 0; i < listModel.size(); i++) {
+                                            String currentIP = listModel.get(i);
+                                            if (!updatedIPs.contains(currentIP)) {
+                                                ipsToRemove.add(currentIP);
+                                            }
+                                        }
 
-                            } catch (InterruptedException er) {
-                                er.printStackTrace();
+                                        // Supprimer les IPs non disponibles
+                                        for (String ip : ipsToRemove) {
+                                            listModel.removeElement(ip);
+                                        }
+
+                                        // Ajouter les nouvelles IPs
+                                        for (String ip : updatedIPs) {
+                                            if (!listModel.contains(ip)) {
+                                                listModel.addElement(ip);
+                                            }
+                                        }
+                                    });
+
+                                } catch (InterruptedException er) {
+                                    er.printStackTrace();
+                                }
                             }
-                        }
-                    }).start();
+                        }).start();
+
 
                 }
             }
