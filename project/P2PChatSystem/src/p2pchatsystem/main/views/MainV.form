@@ -172,6 +172,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="userNameFirstLetterJL">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="11"/>
         <Property name="text" type="java.lang.String" value="userNameProto"/>
       </Properties>
     </Component>

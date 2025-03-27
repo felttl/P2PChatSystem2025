@@ -76,6 +76,7 @@ public class MainV extends javax.swing.JFrame {
         connectedNameJL.setLabelFor(this);
         connectedNameJL.setText("prototypeConnectedToName");
 
+        userNameFirstLetterJL.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         userNameFirstLetterJL.setText("userNameProto");
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {

@@ -13,6 +13,12 @@ public class User {
         this.name = name;
     }
 
+    public User(String name, String address) {
+        this.userId = Network.getMacAddress();
+        this.name = name;
+        this.address = address;
+    }
+
     public String getName() {
         return name;
     }
