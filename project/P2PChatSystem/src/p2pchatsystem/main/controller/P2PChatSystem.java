@@ -169,32 +169,44 @@ public class P2PChatSystem {
                             while (true) {
                                 try {
                                     Thread.sleep(5000);
-                                    Map<String, User> updatedUsers = objUDP.getUsers();
+                                    /*
+                                    List<String> updatedIPs = objUDP.getIPs();
                                     SwingUtilities.invokeLater(() -> {
-                                        // Supprimer les utilisateurs qui ne sont plus disponibles
-                                        for (int i = listModel.size() - 1; i >= 0; i--) {
-                                            String currentUsername = listModel.get(i);
-                                            boolean userExists = updatedUsers.values().stream()
-                                                                            .anyMatch(u -> u.getName().equals(currentUsername));
-                                            if (!userExists && !currentUsername.equals(P2PChatSystem.getUsername())) {
-                                                listModel.removeElementAt(i);
+                                        // Supprimer les IPs non disponibles
+                                        List<String> ipsToRemove = new ArrayList<>();
+                                        for (int i = 0; i < listModel.size(); i++) {
+                                            String currentIP = listModel.get(i);
+                                            if (!updatedIPs.contains(currentIP)) {
+                                                ipsToRemove.add(currentIP);
                                             }
                                         }
 
-                                        // Ajouter les nouveaux utilisateurs
-                                        for (User user : updatedUsers.values()) {
-                                            if (!user.getName().equals(P2PChatSystem.getUsername()) && 
-                                                !listModel.contains(user.getName())) {
-                                                listModel.addElement(user.getName());
+                                        // Supprimer les IPs non disponibles
+                                        for (String ip : ipsToRemove) {
+                                            listModel.removeElement(ip);
+                                        }
+
+                                        // Ajouter les nouvelles IPs
+                                        for (String ip : updatedIPs) {
+                                            if (!listModel.contains(ip)) {
+                                                listModel.addElement(ip);
                                             }
                                         }
-                                    });
+                                    });*/
+
                                 } catch (InterruptedException er) {
                                     er.printStackTrace();
                                 }
+                                    
+                                    SwingUtilities.invokeLater(() -> {
+                                    listModel.clear(); // On vide la liste
+                                    for (User user : objUDP.getUsers().values()) {
+                                        listModel.addElement(user.getName()); // Ajout des utilisateurs détectés
+                                    }
+                                });
+
                             }
                         }).start();
-
 
 
                 }
