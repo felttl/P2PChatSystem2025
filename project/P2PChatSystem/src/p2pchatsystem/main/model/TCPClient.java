@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import p2pchatsystem.main.controller.P2PChatSystem;
 /**
  *
  * @author macbook
@@ -26,11 +27,10 @@ public class TCPClient extends Thread {
     private PrintWriter writer;
     private static ArrayList<TCPClient> listThread = new ArrayList<>();
     
-
     public TCPClient(Socket socket) {
         this.clientSocket = socket;
         try {
-            this.writer = new PrintWriter(clientSocket.getOutputStream(), true);  // Initialisation correcte
+            this.writer = new PrintWriter(clientSocket.getOutputStream(), true);
         } catch (IOException e) {
             System.err.println("Erreur lors de l'initialisation du PrintWriter: " + e.getMessage());
         }
@@ -39,14 +39,15 @@ public class TCPClient extends Thread {
     public static void envoyerMessage(String id, String message, int port) throws IOException {
         Socket clientSocket = new Socket(id, port);
         System.out.println("CONNEXION EN TANT QUE CLIENT TCP");
-
         TCPClient task = new TCPClient(clientSocket);
         listThread.add(task);
         task.start();
-
-        // Assurez-vous que le writer est correctement initialisé avant d'envoyer un message
+        
+        // Prepend the username to the message
+        String fullMessage = P2PChatSystem.getUsername() + ": " + message;
+        
         if (task.writer != null) {
-            task.writer.println(message);  // Envoi du message
+            task.writer.println(fullMessage);  // Send message with username
         } else {
             System.err.println("Erreur: Le writer n'a pas été initialisé correctement !");
         }
@@ -61,9 +62,8 @@ public class TCPClient extends Thread {
                 if (message.equals("Bye")) {
                     break;
                 }
-                System.out.println(message);  // Affichage du message reçu
+                System.out.println(message);  // Display received message
             }
-
             reader.close();
             writer.close();
             clientSocket.close();

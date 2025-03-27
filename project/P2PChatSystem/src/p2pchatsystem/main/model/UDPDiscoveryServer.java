@@ -1,4 +1,5 @@
 package p2pchatsystem.main.model;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -8,17 +9,19 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import p2pchatsystem.main.controller.P2PChatSystem;
+import p2pchatsystem.main.model.business.User;
 
-public class UDPDiscoveryServer extends Thread{
+public class UDPDiscoveryServer extends Thread {
 
     private DatagramSocket socket;
-    private Map<String, String> clients; // Stocke les clients {ip}
+    private Map<String, User> clients; // Store clients with IP as key
     private String monIp;
 
     public UDPDiscoveryServer(int port) throws Exception {
         socket = new DatagramSocket(port);
-        clients = Collections.synchronizedMap(new HashMap<>());
+        clients = new ConcurrentHashMap<>();
         monIp = InetAddress.getLocalHost().getHostAddress();
         
         broadcastHelloMessage();
@@ -31,40 +34,32 @@ public class UDPDiscoveryServer extends Thread{
     public void listen() {
         byte[] buffer = new byte[256];
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
             try {
                 socket.receive(packet);
-                String message = new String(packet.getData(), 0, packet.getLength());
+                String message = new String(packet.getData(), 0, packet.getLength()).trim();
                 InetAddress senderAddress = packet.getAddress();
-                String clientInfo = senderAddress.getHostAddress(); // Suppression de l'utilisation du port
+                String clientInfo = senderAddress.getHostAddress();
 
-                
                 if (clientInfo.equals(monIp)) {
-                    System.out.println("Message ignoré de moi-même: " + clientInfo);
                     continue;
                 }
                 
-                if (message.startsWith("bonjour")) {
-                    // Si le client n'est pas déjà dans la liste
+                String username = extractUsername(message);
+                
+                if (message.startsWith("bonjour") || message.startsWith("salut")) {
                     if (!clients.containsKey(clientInfo)) {
-                        System.out.println("New client connected: " + clientInfo);
-                        clients.put(clientInfo, senderAddress.getHostAddress());
-
-                        UDPDiscoveryClient.response(senderAddress.getHostAddress(),P2PChatSystem.getUsername());
+                        clients.put(clientInfo, new User(username, clientInfo));
                     }
-                } else if(message.startsWith("salut")){
-                        if (!clients.containsKey(clientInfo)) {
-                            System.out.println("New client connected: " + clientInfo);
-                            clients.put(clientInfo, senderAddress.getHostAddress());
-                        }
-                        
-                    } else if (message.startsWith("bye")) {
-                        System.out.println("Client left: " + clientInfo);
-                        clients.remove(clientInfo);
+                    
+                    if (message.startsWith("bonjour")) {
+                        UDPDiscoveryClient.response(clientInfo, P2PChatSystem.getUsername());
+                    }
+                } else if (message.startsWith("bye")) {
+                    clients.remove(clientInfo);
                 }
-
-                // Afficher les clients connectés sans le port
+                
                 System.out.println("Clients connectés: " + clients.keySet());
                 
             } catch (Exception e) {
@@ -73,23 +68,47 @@ public class UDPDiscoveryServer extends Thread{
         }
     }
     
-    public Map<String, String> getUsers(){
-        return this.clients;
+    private String extractUsername(String message) {
+        try {
+            String[] parts = message.split("\\s+");
+            for (String part : parts) {
+                if (part.startsWith("nom=")) {
+                    return part.substring(4);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to extract username from: " + message);
+        }
+        
+        return "Unknown";
+    }
+    
+    public Map<String, User> getUsers() {
+        return new HashMap<>(clients);
     }
     
     public void run() {
-    try {
-        System.out.println("UDP Discovery Server running on port 12345...");
-        this.listen();
-        } catch (Exception ex) {}
+        try {
+            System.out.println("UDP Discovery Server running on port 12345...");
+            this.listen();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
     
-    
-     public void deconnexion() throws IOException{
+    public void deconnexion() throws IOException {
         UDPDiscoveryClient.aurevoir();
+        socket.close();
     }
     
-    /*Partie pour comparer les ips pour les serveurs pour mes connexions tcp*/
+    public String getIpByUsername(String username) {
+        for (Map.Entry<String, User> entry : clients.entrySet()) {
+            if (entry.getValue().getName().equals(username)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
     
     private int compareIp(String ip1, String ip2) {
         String[] parts1 = ip1.split("\\.");
@@ -106,12 +125,7 @@ public class UDPDiscoveryServer extends Thread{
     }
     
     public List<String> getIPs() {
-        List<String> Ips = new ArrayList<>();
-        
-        for (String clientIp : clients.keySet()) {
-            Ips.add(clientIp);
-        } 
-        return Ips;
+        return new ArrayList<>(clients.keySet());
     }
     
     public List<String> getSmallerIPs() {
@@ -131,19 +145,18 @@ public class UDPDiscoveryServer extends Thread{
     }
 
     public List<String> getBiggerIPs() {
-        List<String> smallerIPs = new ArrayList<>();
+        List<String> biggerIPs = new ArrayList<>();
 
         try {
             for (String clientIp : clients.keySet()) {
                 if (compareIp(clientIp, monIp) > 0) {
-                    smallerIPs.add(clientIp);
+                    biggerIPs.add(clientIp);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return smallerIPs;
+        return biggerIPs;
     }
-    
 }

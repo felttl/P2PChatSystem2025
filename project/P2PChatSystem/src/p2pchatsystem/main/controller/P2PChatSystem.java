@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +16,7 @@ import javax.swing.*;
 import p2pchatsystem.main.model.TCPClient;
 import p2pchatsystem.main.model.TCPServer;
 import p2pchatsystem.main.model.UDPDiscoveryServer;
+import p2pchatsystem.main.model.business.User;
 
 import p2pchatsystem.main.views.EnterV;
 import p2pchatsystem.main.views.MainV;
@@ -75,16 +77,18 @@ public class P2PChatSystem {
                     P2PChatSystem.username = buttonTitle;
                     
                     
+                    // Modification de la partie où vous gérez la liste
                     DefaultListModel<String> listModel = new DefaultListModel<>();
-                    JList<String> ipList = ((MainV) P2PChatSystem.currentV).getUsersListJL();
-                    ipList.setModel(listModel);
-                    ipList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                    JList<String> userList = ((MainV) P2PChatSystem.currentV).getUsersListJL();
+                    userList.setModel(listModel);
+                    userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-                    // Ajout des IPs
-                    List<String> availableIPs = objUDP.getIPs();
-                    for (String ip : availableIPs) {
-                        listModel.addElement(ip);
-                    }
+
+                    Map<String, User> availableUsers = objUDP.getUsers();
+                    for (User user : availableUsers.values()) {
+                         listModel.addElement(user.getName());
+                     }
+
                     
 
                     JTextArea messageArea = ((MainV) P2PChatSystem.currentV).getjAffichageArea();
@@ -94,36 +98,37 @@ public class P2PChatSystem {
 
                     JButton sendJB = ((MainV) P2PChatSystem.currentV).getSendJB();
                     // Action à exécuter lors de l'envoi d'un message
+                    // Modification de l'envoi de message
                     sendJB.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        String selectedUser = ipList.getSelectedValue();  // IP sélectionnée
-                        System.out.println("Selected IP: " + selectedUser);
-                        if (selectedUser != null) {
-                            String message = ((MainV) P2PChatSystem.currentV).getUserTextJBA().getText().trim();
-                            if (!message.isEmpty()) {
-                                try {
-                                    // Envoyer le message via le client TCP
-                                    List<String> smallest = objUDP.getSmallerIPs();
-                                    if(smallest.contains(selectedUser)){
-                                        TCPClient.envoyerMessage(selectedUser, message, 50001);
-                                    }else{
-                                        TCPClient.envoyerMessage(selectedUser, message, 50000);
-                                    }
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String selectedUsername = userList.getSelectedValue();
+                            if (selectedUsername != null) {
+                                String selectedIp = objUDP.getIpByUsername(selectedUsername);
+                                String message = ((MainV) P2PChatSystem.currentV).getUserTextJBA().getText().trim();
 
-                                    // Effacer le texte après l'envoi
-                                    ((MainV) P2PChatSystem.currentV).getUserTextJBA().setText("");
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
+                                if (!message.isEmpty()) {
+                                    try {
+                                        List<String> smallest = objUDP.getSmallerIPs();
+                                        if(smallest.contains(selectedIp)){
+                                            TCPClient.envoyerMessage(selectedIp, message, 50001);
+                                        } else {
+                                            TCPClient.envoyerMessage(selectedIp, message, 50000);
+                                        }
+
+                                        ((MainV) P2PChatSystem.currentV).getUserTextJBA().setText("");
+                                    } catch (Exception ex) {
+                                        ex.printStackTrace();
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(currentV, "Veuillez saisir un message.", "Erreur", JOptionPane.ERROR_MESSAGE);
                                 }
                             } else {
-                                JOptionPane.showMessageDialog(currentV, "Veuillez saisir un message.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(currentV, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
                             }
-                        } else {
-                            JOptionPane.showMessageDialog(currentV, "Veuillez sélectionner une IP.", "Erreur", JOptionPane.ERROR_MESSAGE);
                         }
-                    }
                     });
+
                     
 
                     JButton leaveButton = ((MainV) P2PChatSystem.currentV).getLeaveBtn();
@@ -159,39 +164,37 @@ public class P2PChatSystem {
                         }
                     });
                     // Mettre à jour la liste des IPs disponibles
+                        // Mettre à jour la liste des IPs disponibles
                         new Thread(() -> {
                             while (true) {
                                 try {
                                     Thread.sleep(5000);
-                                    List<String> updatedIPs = objUDP.getIPs();
+                                    Map<String, User> updatedUsers = objUDP.getUsers();
                                     SwingUtilities.invokeLater(() -> {
-                                        // Supprimer les IPs non disponibles
-                                        List<String> ipsToRemove = new ArrayList<>();
-                                        for (int i = 0; i < listModel.size(); i++) {
-                                            String currentIP = listModel.get(i);
-                                            if (!updatedIPs.contains(currentIP)) {
-                                                ipsToRemove.add(currentIP);
+                                        // Supprimer les utilisateurs qui ne sont plus disponibles
+                                        for (int i = listModel.size() - 1; i >= 0; i--) {
+                                            String currentUsername = listModel.get(i);
+                                            boolean userExists = updatedUsers.values().stream()
+                                                                            .anyMatch(u -> u.getName().equals(currentUsername));
+                                            if (!userExists && !currentUsername.equals(P2PChatSystem.getUsername())) {
+                                                listModel.removeElementAt(i);
                                             }
                                         }
 
-                                        // Supprimer les IPs non disponibles
-                                        for (String ip : ipsToRemove) {
-                                            listModel.removeElement(ip);
-                                        }
-
-                                        // Ajouter les nouvelles IPs
-                                        for (String ip : updatedIPs) {
-                                            if (!listModel.contains(ip)) {
-                                                listModel.addElement(ip);
+                                        // Ajouter les nouveaux utilisateurs
+                                        for (User user : updatedUsers.values()) {
+                                            if (!user.getName().equals(P2PChatSystem.getUsername()) && 
+                                                !listModel.contains(user.getName())) {
+                                                listModel.addElement(user.getName());
                                             }
                                         }
                                     });
-
                                 } catch (InterruptedException er) {
                                     er.printStackTrace();
                                 }
                             }
                         }).start();
+
 
 
                 }

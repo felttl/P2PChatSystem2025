@@ -17,32 +17,25 @@ public class UDPDiscoveryClient {
    
     public static void bonjour(String nom) throws IOException {
         DatagramSocket socket = new DatagramSocket();
-        InetAddress broadcastAddress = InetAddress.getByName(UDPDiscoveryClient.getBroadcastAddress()); // Utiliser l'adresse de broadcast
-        
-        String message = "bonjour nom="+nom;
+        InetAddress broadcastAddress = InetAddress.getByName(UDPDiscoveryClient.getBroadcastAddress());
 
+        String message = "bonjour nom=" + nom;
         DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), broadcastAddress, 12345);
         socket.send(packet);
-        System.out.println("Message ENVOYÉ");
-
         socket.close();
     }
-    
 
-    static void response(String hostAddress, String nom) throws IOException{
+    public static void response(String hostAddress, String nom) throws IOException {
         DatagramSocket socket = new DatagramSocket();
-        InetAddress broadcastAddress = InetAddress.getByName(hostAddress); // Utiliser l'adresse de broadcast
-        
-        String message = "salut nom="+nom;
+        InetAddress broadcastAddress = InetAddress.getByName(hostAddress);
 
+        String message = "salut nom=" + nom;
         DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), broadcastAddress, 12345);
         socket.send(packet);
-        System.out.println("Message ENVOYÉ");
-
         socket.close();
     }
 
-    static void aurevoir() throws IOException{
+    public static void aurevoir() throws IOException{
         DatagramSocket socket = new DatagramSocket();
         InetAddress broadcastAddress = InetAddress.getByName(UDPDiscoveryClient.getBroadcastAddress()); // Utiliser l'adresse de broadcast
         //

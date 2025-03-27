@@ -19,7 +19,7 @@ import javax.swing.SwingUtilities;
  */
 public class TCPServer extends Thread {
     private Socket clientSocket;
-    private static JTextArea messageArea;  // Référence vers la zone de texte dans l'interface graphique
+    private static JTextArea messageArea;
     private String ip;
     private int port;
 
@@ -39,11 +39,10 @@ public class TCPServer extends Thread {
                 if (message.equals("Bye")) {
                     break;
                 }
-                // Affichage du message dans la fenêtre
+                // Display message in the window
                 final String finalMessage = message;
-                SwingUtilities.invokeLater(() -> messageArea.append("Message reçu: " + finalMessage + "\n"));
+                SwingUtilities.invokeLater(() -> messageArea.append(finalMessage + "\n"));
             }
-
             reader.close();
             writer.close();
             clientSocket.close();
@@ -55,11 +54,9 @@ public class TCPServer extends Thread {
     public static void lancerServeurPort1(JTextArea messageArea) {
         try {
             ServerSocket serverSocket = new ServerSocket(50000);
-
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Connection établie avec " + clientSocket.getInetAddress());
-
                 TCPServer task = new TCPServer(clientSocket, messageArea, 50000);
                 task.start();
             }
@@ -71,11 +68,9 @@ public class TCPServer extends Thread {
     public static void lancerServeurPort2(JTextArea messageArea) {
         try {
             ServerSocket serverSocket = new ServerSocket(50001);
-
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Connection établie avec " + clientSocket.getInetAddress());
-
                 TCPServer task = new TCPServer(clientSocket, messageArea, 50001);
                 task.start();
             }
