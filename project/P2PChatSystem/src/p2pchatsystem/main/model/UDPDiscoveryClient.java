@@ -44,7 +44,7 @@ public class UDPDiscoveryClient {
 
     static void aurevoir() throws IOException{
         DatagramSocket socket = new DatagramSocket();
-        InetAddress broadcastAddress = InetAddress.getByName("255.255.255.255"); // Utiliser l'adresse de broadcast
+        InetAddress broadcastAddress = InetAddress.getByName(UDPDiscoveryClient.getBroadcastAddress()); // Utiliser l'adresse de broadcast
         //
         
         String message = "bye";
