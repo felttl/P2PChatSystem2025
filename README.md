@@ -1,6 +1,10 @@
 # P2PChatSystem2025
 L3 integrated project
 
+> [!IMPORTANT]
+>
+> <a href="./v2/README.md">version 2 here</a>
+
 #### technology :
 
 - java (awt, swing)
