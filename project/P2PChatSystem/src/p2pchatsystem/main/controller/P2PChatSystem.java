@@ -6,7 +6,6 @@ package p2pchatsystem.main.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -17,10 +16,6 @@ import p2pchatsystem.main.model.TCPClient;
 import p2pchatsystem.main.model.TCPServer;
 import p2pchatsystem.main.model.UDPDiscoveryServer;
 import p2pchatsystem.main.model.business.User;
-
-import p2pchatsystem.main.views.EnterV;
-import p2pchatsystem.main.views.MainV;
-import p2pchatsystem.main.views.LeaveV;
 
 /**
  *
